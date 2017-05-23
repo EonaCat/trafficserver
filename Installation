@@ -1,0 +1,103 @@
+Installation for Apache Traffic Server
+
+1. sudo apt-get install trafficserver
+
+2. Go to /etc/ssl
+
+###
+#Please note that the SSL certificate needs to be a valid FQDN or ipaddress
+###
+
+# Generate Private Key
+3. openssl genrsa -out NightBitsLAN.private 2048  
+
+# Create Certificate Signing Request
+4. openssl req -new -key NightBitsLAN.private -out NightBitsLAN.csr  
+
+# Sign Certificate
+5. openssl x509 -req -days 3652 -in NightBitsLAN.csr -signkey NightBitsLAN.private -out NightBitsLAN.cert  
+
+#create PEM file
+6. cat NightBitsLAN.cert NightBitsLAN.private > NightBitsLAN.pem
+
+7. Go to /etc/trafficserver
+	
+	Traffic server configuration for our transparent proxy:
+		8. vi records.config
+			#Set the proxy name
+			CONFIG proxy.config.proxy_name STRING NightBitsLAN
+			
+			#Enables caching of proxied HTTP requests.
+			CONFIG proxy.config.http.cache.http INT 1	
+			
+			#Disable reverse proxying support.
+			CONFIG proxy.config.reverse_proxy.enabled INT 0
+
+			#Enable the option that a remap rule must exist before Traffic Server will proxy the request
+			CONFIG proxy.config.url_remap.remap_required INT 1
+
+			#Keep client request header intact
+			CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
+			
+			#Set response header
+			CONFIG proxy.config.http.response_server_enabled INT 1
+			CONFIG proxy.config.http.response_server_str STRING NightBitsLAN
+
+			#Bind server to listen on port in transparent mode
+			CONFIG proxy.config.http.server_ports STRING 4321:tr-full
+			
+			#insert via header in request and response
+			CONFIG proxy.config.http.insert_request_via_str INT 1
+			CONFIG proxy.config.http.insert_response_via_str INT 1
+
+			#set the user which is executing the trafficserver
+			CONFIG proxy.config.admin.user_id STRING trafficserver
+
+			#set logging directory
+			CONFIG proxy.config.log.logfile_dir STRING /var/log/trafficserver
+
+			#Set the logging level
+			CONFIG proxy.config.log.logging_enabled INT 3
+
+			#Log all requests 
+			CONFIG proxy.config.log.squid_log_enabled INT 1
+			
+			#Log errors in log file
+			CONFIG proxy.config.http.errors.log_error_pages INT 1
+				
+			#Enable our own custom logging
+			CONFIG proxy.config.log.custom_log_enabled INT 1			
+
+			#Enable rollup for logging
+			CONFIG proxy.config.log.rolling_enabled INT 1
+			
+			#Setup the SSL cipher usages
+			CONFIG proxy.config.ssl.server.cipher_suite STRING RC4-SHA:AES128-SHA:DES-CBC3-SHA:AES256-SHA:ALL:!aNULL:!EXP:!LOW:!MD5:!SSLV2:!NULL
+
+			#Enable cache bypass for client and server (this will increase object caching)
+			CONFIG proxy.config.http.cache.ignore_client_no_cache INT 1
+			CONFIG proxy.config.http.cache.ignore_server_no_cache INT 1
+
+			#Enable auto delete of rollup files
+			CONFIG proxy.config.log.auto_delete_rolled_files INT 1
+
+			#insert the forward header
+			CONFIG proxy.config.http.insert_squid_x_forwarded_for INT 1
+			
+			#set the cache storage database
+			CONFIG proxy.config.hostdb.storage_path STRING /data/cache/trafficserver			
+
+		3. vi storage.config
+			#Setup 100GB for caching in specified directory
+			/data/cache/trafficserver 100G
+
+
+
+
+#Debug trafficserver via HTTPS protocol
+sudo /usr/bin/traffic_server -T ssl
+#Debug trafficserver via HTTP protocol
+sudo /usr/bin/traffic_server -T ssl
+
+
+
