@@ -1,0 +1,2 @@
+iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 80 -j DNAT --to-destination TRAFFICSERVERHOST:4322
+iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 443 -j DNAT --to-destination TRAFFICSERVERHOST:4323
