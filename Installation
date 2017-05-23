@@ -1,7 +1,15 @@
 Installation for Apache Traffic Server
 
-1. sudo apt-get install trafficserver
-
+Install option 1:
+	1. sudo apt-get install trafficserver
+Install option 2:
+	1. apt-get install autoconf automake libtool pkg-config libmodule-install-perl gcc libssl-dev tcl-dev libpcre3-dev libcap-dev libhwloc-dev libncurses5-dev libcurl4-openssl-dev flex
+	2. git clone https://git-wip-us.apache.org/repos/asf/trafficserver.git
+	3. cd trafficserver
+	4. autoreconf -if 
+	5. ./configure
+	6. make && make install
+	
 2. Go to /etc/ssl
 
 ###
