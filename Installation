@@ -9,12 +9,14 @@ Install option 2 (git):
 	4. autoreconf -if 
 	5. ./configure
 	6. make && make install
+	6. ldconfig
 Install option 3 (source):
 	1. download the latest version from http://trafficserver.apache.org/downloads
 	2. extract using tar xf traffficservern.tar.bz2
 	3. cd trafficserver
 	4. ./configure
 	5. make && make install
+	6. ldconfig
 
 2. Go to /etc/ssl
 
