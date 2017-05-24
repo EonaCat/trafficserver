@@ -125,9 +125,6 @@ DEFAULT DIR                        CONTENTS
 
 
 #Debug trafficserver via HTTPS protocol
-sudo /usr/bin/traffic_server -T ssl
+[option 1]  sudo /usr/bin/traffic_server -T ssl		[option 2 & 3] sudo /usr/local/bin/traffic_server -T ssl
 #Debug trafficserver via HTTP protocol
-sudo /usr/bin/traffic_server -T ssl
-
-
-
+[option 1]  sudo /usr/bin/traffic_server -T http	[option 2 & 3] sudo /usr/local/bin/traffic_server -T http
