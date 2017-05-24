@@ -2,14 +2,20 @@ Installation for Apache Traffic Server
 
 Install option 1:
 	1. sudo apt-get install trafficserver
-Install option 2:
+Install option 2 (git):
 	1. apt-get install autoconf automake libtool pkg-config libmodule-install-perl gcc libssl-dev tcl-dev libpcre3-dev libcap-dev libhwloc-dev libncurses5-dev libcurl4-openssl-dev flex
 	2. git clone https://git-wip-us.apache.org/repos/asf/trafficserver.git
 	3. cd trafficserver
 	4. autoreconf -if 
 	5. ./configure
 	6. make && make install
-	
+Install option 3 (source):
+	1. download the latest version from http://trafficserver.apache.org/downloads
+	2. extract using tar xf traffficservern.tar.bz2
+	3. cd trafficserver
+	4. ./configure
+	5. make && make install
+
 2. Go to /etc/ssl
 
 ###
@@ -28,7 +34,7 @@ Install option 2:
 #create PEM file
 6. cat NightBitsLAN.cert NightBitsLAN.private > NightBitsLAN.pem
 
-7. Go to /etc/trafficserver
+7. Go to [option 1] => /etc/trafficserver	[option 2 & 3] => /usr/local/etc/trafficserver
 	
 	Traffic server configuration for our transparent proxy:
 		8. vi records.config
@@ -99,7 +105,23 @@ Install option 2:
 			#Setup 100GB for caching in specified directory
 			/data/cache/trafficserver 100G
 
+For Trafficserver directory structure which is installed via option 1:
 
+DEFAULT DIR                        CONTENTS
+  /var/log/trafficserver   	     log files created at runtime
+  /var/trafficserver       	     runtime files
+  /etc/trafficserver       	     configuration files
+  /usr/bin                     	     executable binaries
+  /usr/libexec/trafficserver   	     plugins
+
+For Trafficserver directory structure which is installed via option 2 & 3:
+
+DEFAULT DIR                        CONTENTS
+  /usr/local/var/log/trafficserver   log files created at runtime
+  /usr/local/var/trafficserver       runtime files
+  /usr/local/etc/trafficserver       configuration files
+  /usr/local/bin                     executable binaries
+  /usr/local/libexec/trafficserver   plugins
 
 
 #Debug trafficserver via HTTPS protocol
