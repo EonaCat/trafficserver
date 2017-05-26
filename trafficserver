@@ -1,4 +1,13 @@
 #!/bin/bash
+### BEGIN INIT INFO
+# Provides:          Apache Traffic Server
+# Required-Start:    $network $remote_fs $syslog
+# Required-Stop:     $network $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Apache Traffic Server
+# Description:       This daemon will start the Apache Traffic Server
+### END INIT INFO
 #
 # Apache Traffic Server daemon startup script
 #
